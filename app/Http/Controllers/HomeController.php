@@ -76,18 +76,28 @@ class HomeController extends Controller
     }
 
 
-    public function show(string $id)
+    public function show()
     {
+        $categories = Category::query()
+            ->orderBy('id', 'desc')
+            ->with(['images', 'parent'])
+            ->get();
         $parentCategories = Category::query()
             ->whereNull('parent_id')
-                ->orderBy('id', 'desc')
-                    ->limit(4)
-                        ->with('categories')
-                            ->get();
-        return view('product-filter',[
-            'parentCategories' => $parentCategories
+            ->orderBy('id', 'desc')
+            ->limit(4)
+            ->with('categories')
+            ->get();
+        $filters = request()->input('filters');
+        $products = Product::query()
+            ->orderBy('id', 'desc')
+            ->with(['category', 'volume']) // Added 'volume' to eager load the relationship
+            ->limit(10)
+            ->get();
+        return view('product-filter', [
+            'products' => $products,
+            'categories' => $categories,
+            'parentCategories' => $parentCategories,
         ]);
-
     }
-
 }
