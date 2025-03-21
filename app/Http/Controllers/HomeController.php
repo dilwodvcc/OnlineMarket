@@ -63,8 +63,12 @@ class HomeController extends Controller
     }
 
 
-    public function show(string $id)
+    public function show()
     {
+        $categories = Category::query()
+            ->orderBy('id', 'desc')
+                ->with(['images', 'parent'])
+                    ->get();
         $parentCategories = Category::query()
             ->whereNull('parent_id')
                 ->orderBy('id', 'desc')
@@ -72,9 +76,8 @@ class HomeController extends Controller
                         ->with('categories')
                             ->get();
         return view('product-filter',[
-            'parentCategories' => $parentCategories
+            'categories' => $categories,
+            'parentCategories' => $parentCategories,
         ]);
-
     }
-
 }

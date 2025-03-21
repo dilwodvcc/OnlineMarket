@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Volume;
@@ -35,16 +36,19 @@ class ProductsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $products)
+    public function show()
     {
         $filters = request()->input('filters');
-        Product::query()
+        $products = Product::query()
             ->orderBy(\request()->get('sort_order'), 'desc')
                 ->whereHas('volume', function ($query) use ($filters) {
-                    $query->whereHas('volume', function ($query) use ($filters) {
-                    $query->where('name', $filters);
+                    $query->whereHas('volumes', function ($query) use ($filters) {
+                        $query->where('name', $filters);
                     });
-                });
+            });
+        return view('product-filter',[
+            'products' => $products
+        ]);
     }
 
     /**
