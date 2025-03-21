@@ -1,4 +1,3 @@
-
 <x-header title="Online Market"></x-header>
 
 
@@ -115,7 +114,7 @@
                     </div>
                     <div
                         class="bb-category-block owl-carousel ml-[-150px] w-[calc(100%+150px)] pt-[30px] pl-[30px] bg-[#fff] rounded-tl-[30px] relative max-[991px]:ml-[0] max-[991px]:w-full max-[991px]:p-[0]">
-                        @foreach($categories as $category)
+                        @foreach($parentCategories as $category)
                             <div
                                 class="bb-category-box p-[30px] rounded-[20px] flex flex-col items-center text-center max-[1399px]:p-[20px] category-items-1 bg-[#fef1f1]"
                                 data-aos="flip-left" data-aos-duration="1000" data-aos-delay="200">
