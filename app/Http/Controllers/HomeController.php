@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class HomeController extends Controller
 {
@@ -51,6 +52,15 @@ class HomeController extends Controller
                     ->limit(4)
                         ->with('categories')
                             ->get();
+        $productsMenu = Category::query()
+            ->whereNull('parent_id')
+                ->orderBy('id', 'desc')
+                    ->with('categories')
+                        ->get();
+        $products= Product::query()
+            ->orderBy('id', 'desc')
+                ->limit(10)
+                    ->get();
         return view('home',[
             'topBanners' => $topBanners,
             'midBanner' => $midBanner,
@@ -59,7 +69,10 @@ class HomeController extends Controller
             'categories' => $categories,
             'latestPosts' => $latestPosts,
             'parentCategories' => $parentCategories,
-            'insPosts' => $insPosts
+            'insPosts' => $insPosts,
+            'products' => $products,
+            'insPosts' => $insPosts,
+            'productsMenu' => $productsMenu,
         ]);
     }
 

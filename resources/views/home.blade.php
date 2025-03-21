@@ -9,7 +9,7 @@
 </div>
 
 <!-- Header -->
-<x-navbar :parentCategories="$parentCategories"></x-navbar>
+<x-navbar :parentCategories="$parentCategories" :productsMenu="$productsMenu"></x-navbar>
 <!-- Hero -->
 <section class="section-hero mb-[50px] max-[1199px]:mb-[35px] py-[50px] relative bg-[#f8f8fb] overflow-hidden">
     <div
@@ -446,7 +446,8 @@
                                                 <i class="ri-star-fill float-left text-[15px] mr-[3px] leading-[18px] text-[#fea99a]"></i>
                                                 <i class="ri-star-fill float-left text-[15px] mr-[3px] leading-[18px] text-[#fea99a]"></i>
                                                 <i class="ri-star-line float-left text-[15px] mr-[3px] leading-[18px] text-[#777]"></i>
-                                            </span>
+        @props(['parentCategories'])
+                                    </span>
                                     </div>
                                     <h4 class="bb-pro-title mb-[8px] text-[16px] leading-[18px]">
                                         <a href="product-left-sidebar.html"
@@ -1184,7 +1185,7 @@
 <!-- Cart sidebar -->
 <x-cart-sidebar></x-cart-sidebar>
 <!-- Category Popup -->
-<x-category-popup></x-category-popup>
+<x-category-popup :categories="$categories" :products="$products"></x-category-popup>
 <!-- Quick view Modal -->
 <x-quick-view-modal></x-quick-view-modal>
 <!-- Newsletter Modal -->
