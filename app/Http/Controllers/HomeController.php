@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -67,15 +68,22 @@ class HomeController extends Controller
     {
         $categories = Category::query()
             ->orderBy('id', 'desc')
-                ->with(['images', 'parent'])
-                    ->get();
+            ->with(['images', 'parent'])
+            ->get();
         $parentCategories = Category::query()
             ->whereNull('parent_id')
-                ->orderBy('id', 'desc')
-                    ->limit(4)
-                        ->with('categories')
-                            ->get();
-        return view('product-filter',[
+            ->orderBy('id', 'desc')
+            ->limit(4)
+            ->with('categories')
+            ->get();
+        $filters = request()->input('filters');
+        $products = Product::query()
+            ->orderBy('id', 'desc')
+            ->with(['category', 'volume']) // Added 'volume' to eager load the relationship
+            ->limit(10)
+            ->get();
+        return view('product-filter', [
+            'products' => $products,
             'categories' => $categories,
             'parentCategories' => $parentCategories,
         ]);

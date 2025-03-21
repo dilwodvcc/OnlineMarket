@@ -14,7 +14,7 @@ class Product extends Model
         'price',
         'sale_price',
         'category_id',
-        'product_volume', // Bu 'volume_id' emas!
+        'volume_id', // Bu 'volume_id' emas!
         'stock_quantity',
     ];
 
@@ -25,9 +25,8 @@ class Product extends Model
 
     public function volume()
     {
-        return $this->belongsTo(Volume::class, 'product_volume', 'id');
+        return $this->belongsTo(Volume::class, 'volume_id', 'id');
     }
-
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');

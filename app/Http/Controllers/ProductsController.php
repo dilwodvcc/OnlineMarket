@@ -38,16 +38,14 @@ class ProductsController extends Controller
      */
     public function show()
     {
-        $filters = request()->input('filters');
+
         $products = Product::query()
-            ->orderBy(\request()->get('sort_order'), 'desc')
-                ->whereHas('volume', function ($query) use ($filters) {
-                    $query->whereHas('volumes', function ($query) use ($filters) {
-                        $query->where('name', $filters);
-                    });
-            });
+            ->orderBy('id', 'desc')
+            ->with(['category'])
+            ->limit(10) // Faqat 10ta mahsulotni olish uchun
+            ->get();
         return view('product-filter',[
-            'products' => $products
+            'products' => $products,
         ]);
     }
 
