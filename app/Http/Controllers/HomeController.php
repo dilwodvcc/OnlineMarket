@@ -69,7 +69,6 @@ class HomeController extends Controller
             'categories' => $categories,
             'latestPosts' => $latestPosts,
             'parentCategories' => $parentCategories,
-            'insPosts' => $insPosts,
             'products' => $products,
             'insPosts' => $insPosts,
             'productsMenu' => $productsMenu,

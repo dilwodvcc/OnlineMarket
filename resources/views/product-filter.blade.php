@@ -6,7 +6,7 @@
     </div>
 
     <!-- Header -->
-    <x-navbar :parentCategories="$parentCategories"></x-navbar>
+    <x-navbar :parentCategories="$parentCategories" :productsMenu="$productsMenu"></x-navbar>
 
     <!-- Breadcrumb -->
     <section class="section-breadcrumb mb-[50px] max-[1199px]:mb-[35px] border-b-[1px] border-solid border-[#eee] bg-[#f8f8fb]">
