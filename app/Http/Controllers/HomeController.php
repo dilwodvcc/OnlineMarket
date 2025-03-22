@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
 class HomeController extends Controller
 {
@@ -70,7 +69,6 @@ class HomeController extends Controller
             'latestPosts' => $latestPosts,
             'parentCategories' => $parentCategories,
             'products' => $products,
-            'insPosts' => $insPosts,
             'productsMenu' => $productsMenu,
         ]);
     }

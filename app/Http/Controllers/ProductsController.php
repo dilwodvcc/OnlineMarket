@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Volume;
-use Illuminate\Routing\Controller;
 
 class ProductsController extends Controller
 {
@@ -37,28 +36,59 @@ class ProductsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
+
+    public function show(Request $request)
     {
-        $categories = Category::query()
-            ->orderBy('id', 'desc')
-            ->with(['images', 'parent'])
-            ->get();
-        $parentCategories = Category::query()
-            ->whereNull('parent_id')
+        $categories = $request->input('categories');  // Selected category names
+        $weights = $request->input('weights');        // Selected weights
+        $startPrice = $request->input('startPrice');  // Price range start
+        $endPrice = $request->input('endPrice');      // Price range end
+
+        // Get selected categories by name
+        $selectedCategories = Category::when($categories, function ($query) use ($categories) {
+            return $query->whereIn('name', $categories);
+        })->pluck('id')->toArray();
+
+        // Get all child categories in a single query
+        $categoryIds = Category::whereIn('parent_id', $selectedCategories)
+            ->orWhereIn('id', $selectedCategories)
+            ->pluck('id')
+            ->toArray();
+
+        // Get parent categories with their children
+        $parentCategories = Category::whereNull('parent_id')
             ->orderBy('id', 'desc')
             ->limit(4)
             ->with('categories')
             ->get();
-        $filters = request()->input('filters');
-        $products = Product::query()
+
+        // Get all main categories (for menu)
+        $productsMenu = Category::whereNull('parent_id')
             ->orderBy('id', 'desc')
-            ->with(['category', 'volume']) // Added 'volume' to eager load the relationship
+            ->with('categories')
+            ->get();
+
+        // Filter products based on selected criteria
+        $products = Product::query()
+            ->when(empty($categoryIds), function ($query) use ($categoryIds) {
+                return $query->whereIn('category_id', $categoryIds);
+            })
+            ->when($weights, function ($query) use ($weights) {
+                $productVolumes = Volume::whereIn('name', $weights)->pluck('id');
+                return $query->whereIn('volume_id', $productVolumes);
+            })
+            ->when($startPrice && $endPrice, function ($query) use ($startPrice, $endPrice) {
+                return $query->whereBetween('price', [$startPrice, $endPrice]);
+            })
+            ->orderBy('id', 'desc')
             ->limit(10)
             ->get();
+        $categories = Category::all();
         return view('product-filter', [
             'products' => $products,
-            'categories' => $categories,
             'parentCategories' => $parentCategories,
+            'productsMenu' => $productsMenu,
+            'categories' => $categories
         ]);
     }
 

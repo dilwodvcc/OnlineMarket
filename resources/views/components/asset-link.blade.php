@@ -5,6 +5,3 @@
 @elseif($type   === 'css')
     <link rel="stylesheet" href="{{ $src }}">
 @endif
-
-
-

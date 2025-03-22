@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
+
+use App\Models\ProductVolume;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
+
 
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -13,7 +16,9 @@ use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Textarea;
 
 /**
  * @extends ModelResource<Product>
@@ -22,7 +27,7 @@ class ProductResource extends ModelResource
 {
     protected string $model = Product::class;
 
-    protected string $title = 'Product';
+    protected string $title = 'Products';
 
     /**
      * @return list<FieldContract>
@@ -40,12 +45,10 @@ class ProductResource extends ModelResource
                 'category',
                 fn($item)=>"$item->name",
                 CategoryResource::class),
-            BelongsTo::make(
-                'Product volume',
-                'volume',
-                fn($item)=>"$item->name",
-                VolumeResource::class),
-            Text::make('stock_quantity')->sortable(),
+            Number::make('quantity'),
+            BelongsTo::make('Volume', 'volume', fn($item) => $item->id . '-'. $item->name,
+                ProductVolumeResource::class
+            )
         ];
     }
 
@@ -55,24 +58,20 @@ class ProductResource extends ModelResource
     protected function formFields(): iterable
     {
         return [
-            Box::make([
-                ID::make(),
-                Text::make('Name'),
-                Text::make('Description'),
-                Text::make('Price'),
-                Text::make('Sale price'),
-                BelongsTo::make(
-                    'Category ID and Name',
-                    'category',
-                    fn($item)=>"$item->id. $item->name",
-                    CategoryResource::class)->nullable(),
-                BelongsTo::make(
-                    'Product volume',
-                    'volume',
-                    fn($item)=>"$item->id. $item->name",
-                    VolumeResource::class)->nullable(),
-                Text::make('Stock quantity'),
-            ])
+            ID::make()->sortable(),
+            Text::make('name')->sortable(),
+            Text::make('description')->sortable(),
+            Text::make('price')->sortable(),
+            Text::make('sale_price')->sortable(),
+            BelongsTo::make(
+                'Category ID and Name',
+                'category',
+                fn($item)=>"$item->name",
+                CategoryResource::class),
+            Number::make('quantity'),
+            BelongsTo::make('Volume', 'volume', fn($item) => $item->id . '-'. $item->name,
+                ProductVolumeResource::class
+            )
         ];
     }
 
@@ -82,22 +81,20 @@ class ProductResource extends ModelResource
     protected function detailFields(): iterable
     {
         return [
-            ID::make(),
-            Text::make('Name'),
-            Text::make('Description'),
-            Text::make('Price'),
-            Text::make('Sale price'),
+            ID::make()->sortable(),
+            Text::make('name')->sortable(),
+            Text::make('description')->sortable(),
+            Text::make('price')->sortable(),
+            Text::make('sale_price')->sortable(),
             BelongsTo::make(
                 'Category ID and Name',
                 'category',
-                fn($item)=>"$item->id. $item->name",
+                fn($item)=>"$item->name",
                 CategoryResource::class),
-            BelongsTo::make(
-                'Product volume',
-                'volume',
-                fn($item)=>"$item->id. $item->name",
-                VolumeResource::class),
-            Text::make('Stock quantity'),
+            Number::make('quantity'),
+            BelongsTo::make('Volume', 'volume', fn($item) => $item->id . '-'. $item->name,
+                ProductVolumeResource::class
+            )
         ];
     }
 
@@ -109,8 +106,6 @@ class ProductResource extends ModelResource
      */
     protected function rules(mixed $item): array
     {
-        return [
-
-        ];
+        return [];
     }
 }

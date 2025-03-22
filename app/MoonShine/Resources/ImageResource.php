@@ -24,7 +24,6 @@ class ImageResource extends ModelResource
 {
     protected string $model = Image::class;
 
-    protected string $title = 'Paths';
 
     /**
      * @return list<FieldContract>

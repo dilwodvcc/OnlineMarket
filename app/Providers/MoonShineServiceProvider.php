@@ -13,11 +13,12 @@ use App\MoonShine\Resources\MoonShineUserResource;
 use App\MoonShine\Resources\MoonShineUserRoleResource;
 use App\MoonShine\Resources\PostCategoryResource;
 use App\MoonShine\Resources\PostResource;
+use App\MoonShine\Resources\ProductVolumeResource;
+use App\MoonShine\Resources\CategoryResource;
 use App\MoonShine\Resources\VolumeResource;
 use App\MoonShine\Resources\ProductResource;
-use App\MoonShine\Resources\CategoryResource;
 use App\MoonShine\Resources\ImageResource;
-use App\MoonShine\Resources\BannerResource;
+use App\MoonShine\Resources\BannersResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -36,11 +37,11 @@ class MoonShineServiceProvider extends ServiceProvider
                 MoonShineUserRoleResource::class,
                 PostCategoryResource::class,
                 PostResource::class,
+                ProductVolumeResource::class,
                 CategoryResource::class,
                 ProductResource::class,
-                VolumeResource::class,
                 ImageResource::class,
-                BannerResource::class,
+                BannersResource::class,
             ])
             ->pages([
                 ...$config->getPages(),
