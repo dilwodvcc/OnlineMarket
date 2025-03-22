@@ -16,7 +16,6 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
 
-
 /**
  * @extends ModelResource<Category>
  */
@@ -55,7 +54,6 @@ class CategoryResource extends ModelResource
 
         ];
     }
-
     /**
      * @return list<FieldContract>
      */
@@ -81,7 +79,6 @@ class CategoryResource extends ModelResource
      */
     protected function rules(mixed $item): array
     {
-        return [
-        ];
+        return [];
     }
 }

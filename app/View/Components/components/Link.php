@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class AssetLink extends Component
+class Link extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class AssetLink extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.asset-link');
+        return view('components.components.link');
     }
 }
